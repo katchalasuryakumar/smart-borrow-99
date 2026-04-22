@@ -1,0 +1,88 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- Helpers ---
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { 
+      return isSignedIn() && (
+        request.auth.token.email == 'vinaykoushikkaki@gmail.com' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // --- Entity Validations ---
+    function isValidUser(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100
+          && data.email is string && data.email.size() > 0
+          && data.phone is string && data.phone.size() >= 10 && data.phone.size() <= 15
+          && data.role in ['admin', 'borrower']
+          && data.isVerified is bool;
+    }
+
+    function isValidItem(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100
+          && data.description is string && data.description.size() < 1000
+          && data.price is number && data.price >= 0
+          && data.quantity is int && data.quantity >= 0
+          && data.category is string
+          && data.imageUrl is string
+          && data.status in ['available', 'rented'];
+    }
+
+    function isValidRequest(data) {
+      return data.borrowerId == request.auth.uid
+          && data.itemId is string
+          && data.duration is int && data.duration > 0
+          && data.totalPrice is number && data.totalPrice >= 0
+          && data.status in ['pending', 'accepted', 'rejected'];
+    }
+
+    // --- Matches ---
+
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      allow create: if isSignedIn() && isOwner(userId) && isValidUser(incoming()) 
+                     && incoming().role == 'borrower' && incoming().isVerified == false;
+      allow update: if isSignedIn() && (
+        isAdmin() || 
+        (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['name', 'phone', 'idProofUrl']) && isValidUser(incoming()))
+      );
+    }
+
+    match /items/{itemId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() && isValidItem(incoming());
+    }
+
+    match /requests/{requestId} {
+      allow get: if isSignedIn() && (isAdmin() || resource.data.borrowerId == request.auth.uid);
+      allow list: if isSignedIn() && (isAdmin() || resource.data.borrowerId == request.auth.uid);
+      allow create: if isSignedIn() 
+                     && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isVerified == true
+                     && isValidRequest(incoming())
+                     && incoming().status == 'pending';
+      allow update: if isAdmin() && isValidRequest(incoming());
+    }
+
+    match /feedback/{feedbackId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && incoming().borrowerId == request.auth.uid;
+    }
+
+    match /settings/{settingId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

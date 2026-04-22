@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "borrower"] },
+        "isVerified": { "type": "boolean" },
+        "idProofUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "phone", "role", "isVerified"]
+    },
+    "Item": {
+      "title": "Item",
+      "description": "Rental item details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "quantity": { "type": "number" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["available", "rented"] },
+        "avgRating": { "type": "number" },
+        "totalRatings": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "description", "price", "quantity", "category", "imageUrl", "status"]
+    },
+    "Request": {
+      "title": "Request",
+      "description": "Rental request and payment tracking",
+      "type": "object",
+      "properties": {
+        "borrowerId": { "type": "string" },
+        "itemId": { "type": "string" },
+        "duration": { "type": "number" },
+        "totalPrice": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "rejected"] },
+        "refundStatus": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["borrowerId", "itemId", "duration", "totalPrice", "status"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User rating and feedback for items",
+      "type": "object",
+      "properties": {
+        "borrowerId": { "type": "string" },
+        "itemId": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["borrowerId", "itemId", "rating", "comment"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Global admin settings (UPI, QR)",
+      "type": "object",
+      "properties": {
+        "upiId": { "type": "string" },
+        "qrCodeUrl": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile docs"
+    },
+    "/items/{itemId}": {
+      "schema": "Item",
+      "description": "Rental items"
+    },
+    "/requests/{requestId}": {
+      "schema": "Request",
+      "description": "Rental requests"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User feedback"
+    },
+    "/settings/admin_config": {
+      "schema": "Settings",
+      "description": "Admin configuration"
+    }
+  }
+}

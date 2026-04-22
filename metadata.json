@@ -1,0 +1,6 @@
+{
+  "name": "Smart Campus Share",
+  "description": "A campus-based rental platform where students can rent items and admins manage inventory and requests.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
