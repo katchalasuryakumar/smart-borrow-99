@@ -1,16 +1,44 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🎓 Smart Campus Share
 
-# Run and deploy your AI Studio app
+A campus-based rental platform where students can rent items and admins manage inventory and requests[cite: 10]. It provides a seamless interface for the SMART BORROW CAMPUS community.
+**🌐 Live Demo:** [https://smart-borrow-99.onrender.com](https://smart-borrow-99.onrender.com)
+---
 
-This contains everything you need to run your app locally.
+## ✨ Features
 
-View your app in AI Studio: https://ai.studio/apps/82923201-528a-4e00-bf37-39266337535b
+* **Role-Based Access Control:** Secure access with dedicated features for 'admin' and 'borrower' user roles.
+* **User Verification:** Secure registration where users must be verified using an ID proof before renting.
+* **Inventory Management:** Administrators can easily create, update, and delete rental items in the database.
+* **Rental Request Tracking:** Borrowers can request items for specific durations, and the system tracks statuses including pending, accepted, rejected, returning, and completed.
+* **Feedback & Rating System:** Borrowers can leave ratings and comments on items they have borrowed.
+* **AI Integration:** Built-in support for Google Gemini AI features.
+* **Secure Payments & Settings:** Global admin settings support configuring UPI IDs and QR code URLs for payments.
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 🛠 Tech Stack
+
+**Frontend:**
+* React (v19) with Vite
+* Tailwind CSS & Shadcn UI
+* Framer Motion
+* Lucide React
+
+**Backend & Database:**
+* Firebase (Auth, Firestore, Storage) 
+* Express.js 
+
+**AI & Utilities:**
+* Google GenAI SDK (`@google/genai`)
+* Date-fns for time formatting
+
+---
+
+## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone (https://github.com/katchalasuryakumar/smart-borrow-99)
 
 
 1. Install dependencies:
@@ -18,3 +46,10 @@ View your app in AI Studio: https://ai.studio/apps/82923201-528a-4e00-bf37-39266
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+## 👨‍💻 Developer
+
+**Katchala Surya Kumar**
+* 💼 **LinkedIn:** [Katchala Surya Kumar](https://www.linkedin.com/in/katchalasuryakumar)
+* 🐙 **GitHub:** [@katchalasuryakumar](https://github.com/katchalasuryakumar)
+
+⭐ **If you like this project, consider giving it a star!**
