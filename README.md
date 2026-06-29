@@ -1,6 +1,7 @@
 # 🎓 Smart Campus Share
 
-A campus-based rental platform where students can rent items and admins manage inventory and requests[cite: 10]. It provides a seamless interface for the SMART BORROW CAMPUS community.
+A campus-based rental platform where students can rent items and admins manage inventory and requests. It provides a seamless interface for the SMART BORROW CAMPUS community.
+---
 **🌐 Live Demo:** [https://smart-borrow-99.onrender.com](https://smart-borrow-99.onrender.com)
 ---
 
